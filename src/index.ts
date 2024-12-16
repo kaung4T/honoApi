@@ -31,7 +31,7 @@ app.openapi({
   const adapter = new PrismaD1(c.env.DB);
   const prisma = new PrismaClient({ adapter });
   try {
-    const resposne = await prisma.item.findMany();
+    const resposne = await prisma.task.findMany();
     return c.json(resposne)
   }
   catch (e) {

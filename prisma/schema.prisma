@@ -18,3 +18,8 @@ model Item {
   amount   Int
   quantity Decimal
 }
+
+model Task {
+  id   Int    @id @default(autoincrement())
+  name String
+}

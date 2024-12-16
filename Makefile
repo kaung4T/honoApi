@@ -8,4 +8,4 @@ resetdb:
 	make -s _resetdb DB_NAME=hono-app OPTIONS=--local
 
 resetdb-dev:
-	make -s _resetdb DB_NAME=hibiki-db-dev OPTIONS=--remote
+	make -s _resetdb DB_NAME=hono-app OPTIONS=--remote
