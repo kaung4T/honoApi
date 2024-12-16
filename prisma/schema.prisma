@@ -12,11 +12,9 @@ datasource db {
 }
 
 model Item {
-  id       Int     @id @default(autoincrement())
-  name     String
-  title    String
-  amount   Int
-  quantity Decimal
+  id    Int    @id @default(autoincrement())
+  name  String
+  title String
 }
 
 model Task {

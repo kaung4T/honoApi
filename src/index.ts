@@ -1,5 +1,5 @@
 import { swaggerUI } from '@hono/swagger-ui';
-import { OpenAPIHono } from '@hono/zod-openapi'
+import { OpenAPIHono, z } from '@hono/zod-openapi'
 import { PrismaD1 } from '@prisma/adapter-d1';
 import { PrismaClient } from '@prisma/client';
 
@@ -17,10 +17,17 @@ const app = new OpenAPIHono<{Bindings: Bindings}>();
 app.get('/swagger', swaggerUI({ url: '/doc' }))
 
 app.openapi({
-  path: 'items',
+  path: 'items/:userId',
   method: 'get',
   request: {
-
+    params: z.object({
+      userId: z.string().openapi({
+        param: {
+          name: "userId",
+          in: "path"
+        }
+      })
+    })
   },
   responses: {
     200: {
@@ -28,11 +35,16 @@ app.openapi({
     }
   }
 }, async (c) => {
+  const {userId} = c.req.valid("param")
   const adapter = new PrismaD1(c.env.DB);
   const prisma = new PrismaClient({ adapter });
   try {
     const resposne = await prisma.task.findMany();
-    return c.json(resposne)
+    const context = {
+      data: resposne,
+      param: userId
+    }
+    return c.json(context)
   }
   catch (e) {
     return c.json({ error: e })
